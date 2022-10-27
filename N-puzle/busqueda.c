@@ -261,7 +261,7 @@ int busquedaProfundidadLimitadaIter(int limite, int iterativo){
 }
 
 /*Busqueda voraz*/
-
+/*
 int busqueda_voraz(){
     int objetivo=0, visitados=0;
     tNodo *Actual=(tNodo*) calloc(1,sizeof(tNodo));
@@ -294,9 +294,9 @@ int busqueda_voraz(){
     free(Actual);
     return objetivo;
 }
-
+*/
 /*Busqueda A*/
-
+/*
 int busqueda_A(){
     int objetivo=0, visitados=0;
     tNodo *Actual=(tNodo*) calloc(1,sizeof(tNodo));
@@ -329,7 +329,7 @@ int busqueda_A(){
     free(Actual);
     return objetivo;
 }
-
+*/
 /*Funcion para determinar si el estado es repetido*/
 
 int estado_repetido(LISTA cerrados, tNodo* nodo)
@@ -355,7 +355,7 @@ int estado_repetido(LISTA cerrados, tNodo* nodo)
 }
 
 /*Ordenacion voraz de la lista abiertos*/
-
+/*
 LISTA Ordenar_Abiertos_Voraz(LISTA A, LISTA S){
 
     tNodo *nodo=calloc(1,sizeof(tNodo));
@@ -376,12 +376,12 @@ LISTA Ordenar_Abiertos_A(LISTA L,LISTA S){
 
     if(esVacia(L)){
 
-        InsertarPrimero(&L,nuevo,sizeof(tNodo));
+        InsertarPrimero(&L,nodo,sizeof(tNodo));
     }
     else{
 
         ExtraerPrimero(L,(tNodo *)nodo,sizeof(tNodo));
-        while(!(Esvacia(L)) && ((nodo->valHeuristica + nodo->costeCamino) < ( nuevo->valHeuristica + nuevo->costeCamino ))){
+        while(!(Esvacia(L)) && ((nodo->valHeuristica + nodo->costeCamino) < ( nodo->valHeuristica + nuevo->costeCamino ))){
 
             InsertarUltimo(&aux,(tNodo *)nodo,sizeof(tNodo));
             L = L->next; 
@@ -396,3 +396,4 @@ LISTA Ordenar_Abiertos_A(LISTA L,LISTA S){
 
     return aux;
 }
+*/
