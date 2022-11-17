@@ -39,6 +39,8 @@ int main(){
         printf("Introduce el limite de expansion de la busqueda y la iteración: ");
         scanf("%d,%d",&limite,&iterativo);
         solucionFin(busquedaProfundidadLimitadaIter(limite,iterativo));break;
+        case 6: busqueda_voraz(); break;
+        case 7: busqueda_A(); break;
         default: puts("Busqueda invalida.");
     }
 }while (op > 0 || op < 8);

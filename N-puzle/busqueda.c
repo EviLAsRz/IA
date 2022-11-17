@@ -13,11 +13,11 @@
 #include "busqueda.h"
 
 void solucionFin(int res){
-   printf("\nFin de la busqueda\n");
+    printf("\nFin de la busqueda\n");
     if (res)
-      printf("Se ha llegado al objetivo\n");
-   else
-      printf("No se ha llegado al objetivo\n");
+        printf("Se ha llegado al objetivo\n");
+    else
+        printf("No se ha llegado al objetivo\n");
 }
 void dispNodo(tNodo *nodo){
     dispEstado(nodo->estado);
@@ -30,26 +30,26 @@ void dispCamino(tNodo *nodo){
     }
     else {
         dispCamino(nodo->padre);
-         dispOperador(nodo->operador);
+        dispOperador(nodo->operador);
         dispEstado(nodo->estado);
     }
 }
 
 void dispSolucion(tNodo *nodo){
-   printf("Profundidad=%d\n",nodo->profundidad);
-   printf("Coste=%d\n",nodo->costeCamino);
-   dispCamino(nodo);
+    printf("Profundidad=%d\n",nodo->profundidad);
+    printf("Coste=%d\n",nodo->costeCamino);
+    dispCamino(nodo);
 }
 
 
 /* Crea el nodo raiz. */
 tNodo *nodoInicial(){
-   tNodo *inicial=(tNodo *) malloc(sizeof(tNodo));
-   inicial->estado=estadoInicial();
-   inicial->padre=NULL;
-   inicial->costeCamino=0;
-   inicial->profundidad=0;
-   return inicial;
+    tNodo *inicial=(tNodo *) malloc(sizeof(tNodo));
+    inicial->estado=estadoInicial();
+    inicial->padre=NULL;
+    inicial->costeCamino=0;
+    inicial->profundidad=0;
+    return inicial;
 }
 
 LISTA expandir(tNodo *nodo){
@@ -58,19 +58,19 @@ LISTA expandir(tNodo *nodo){
     tNodo *nuevo=calloc(1,sizeof(tNodo));
     tEstado *s;
     for (op=1; op<=NUM_OPERADORES;op++){
-      if (esValido(op,nodo->estado)){
+        if (esValido(op,nodo->estado)){
                         //s=(tEstado *)calloc(1,sizeof(tEstado));
-          s=aplicaOperador(op,nodo->estado);
-          nuevo->estado=s;
-          nuevo->padre=nodo;
-          nuevo->operador=op;
-          nuevo->costeCamino=nodo->costeCamino + coste(op,nodo->estado);
-          nuevo->profundidad=nodo->profundidad+1;
-          nuevo->valHeuristica = valor_heuristico_p(nuevo->estado,estadoObjetivo());
-          InsertarUltimo(&sucesores,  (tNodo *) nuevo, (sizeof (tNodo)));
-      }
-  }
-return sucesores;
+            s=aplicaOperador(op,nodo->estado);
+            nuevo->estado=s;
+            nuevo->padre=nodo;
+            nuevo->operador=op;
+            nuevo->costeCamino=nodo->costeCamino + coste(op,nodo->estado);
+            nuevo->profundidad=nodo->profundidad+1;
+            nuevo->valHeuristica = valor_heuristico_p(nuevo->estado,estadoObjetivo());
+            InsertarUltimo(&sucesores,  (tNodo *) nuevo, (sizeof (tNodo)));
+        }
+    }
+    return sucesores;
 }
 
 int busqueda(){
@@ -90,9 +90,9 @@ int busqueda(){
             Sucesores = expandir(Actual);
             visitados++;
             Abiertos=Concatenar(Abiertos,Sucesores);
-      }
-   }//while
-   
+        }
+    }//while
+
     printf("\nVisitados= %d\n", visitados);
     if (objetivo)
         dispSolucion(Actual);
@@ -130,8 +130,8 @@ int busquedaAnchuraRep(){
             InsertarUltimo(&Cerrados,Actual,sizeof(tNodo));
             Abiertos=Concatenar(Abiertos,Sucesores);
         }
-      
-   }//while
+
+    }//while
 
     printf("\nVisitados= %d\n", visitados);
     if (objetivo)
@@ -166,7 +166,7 @@ int busquedaProfundidad(){
             InsertarUltimo(&Cerrados,Actual,sizeof(tNodo));
             Abiertos = Concatenar(Sucesores,Abiertos);//profundidad
         }
-   }//while
+    }//while
 
     printf("\nVisitados= %d\n", visitados);
     if (objetivo)
@@ -205,7 +205,7 @@ int busquedaProfundidadLimitada(int limite){
             Abiertos = Concatenar(Sucesores,Abiertos);//profundidad
             limite--;
         }
-   }//while
+    }//while
 
     printf("\nVisitados= %d\n", visitados);
     if (objetivo)
@@ -249,7 +249,7 @@ int busquedaProfundidadLimitadaIter(int limite, int iterativo){
         }
 
 
-   }//while
+    }//while
 
     printf("\nVisitados= %d\n", visitados);
     if (objetivo)
@@ -261,7 +261,7 @@ int busquedaProfundidadLimitadaIter(int limite, int iterativo){
 }
 
 /*Busqueda voraz*/
-/*
+
 int busqueda_voraz(){
     int objetivo=0, visitados=0;
     tNodo *Actual=(tNodo*) calloc(1,sizeof(tNodo));
@@ -284,7 +284,7 @@ int busqueda_voraz(){
             Abiertos=Ordenar_Abiertos_Voraz(Abiertos,Sucesores);
             visitados++;
         }
-   }//while
+    }//while
 
     printf("\nVisitados= %d\n", visitados);
     if (objetivo)
@@ -294,9 +294,52 @@ int busqueda_voraz(){
     free(Actual);
     return objetivo;
 }
-*/
+
+/*ordenacion voraz de la lista abiertos*/
+
+LISTA Ordenar_Abiertos_Voraz(LISTA A, LISTA S){
+
+    tNodo *nodo=calloc(1,sizeof(tNodo));
+
+    while(S != NULL){
+
+        ExtraerPrimero(S,nodo, sizeof(tNodo));
+        A = ordenacion_voraz(S,nodo);
+        S = S->next;
+    }
+    return A;
+}
+
+LISTA ordenacion_voraz(LISTA L, tNodo* nuevo){
+
+    LISTA aux = NULL;
+    tNodo *nodo = calloc(1,sizeof(tNodo));
+
+    if(esVacia(L)){
+
+        InsertarPrimero(&L,nuevo,sizeof(tNodo));
+    }
+    else{
+
+        ExtraerPrimero(L,(tNodo *)nodo,sizeof(tNodo));
+        while(!(esVacia(L)) && ((nodo->valHeuristica) < ( nuevo->valHeuristica))){
+
+            InsertarUltimo(&aux,(tNodo *)nodo,sizeof(tNodo));
+            L = L->next; 
+            if(!(esVacia(L))){
+
+                ExtraerPrimero(L,(tNodo *)nodo,sizeof(tNodo));
+            }
+        }
+        InsertarUltimo(&aux,(tNodo *)nuevo,sizeof(tNodo));
+        aux= Concatenar(aux,L);
+    }
+
+    return aux;
+}
+
 /*Busqueda A*/
-/*
+
 int busqueda_A(){
     int objetivo=0, visitados=0;
     tNodo *Actual=(tNodo*) calloc(1,sizeof(tNodo));
@@ -319,7 +362,7 @@ int busqueda_A(){
             Abiertos=Ordenar_Abiertos_A(Abiertos,Sucesores);
             visitados++;
         }
-   }//while
+    }//while
 
     printf("\nVisitados= %d\n", visitados);
     if (objetivo)
@@ -329,7 +372,7 @@ int busqueda_A(){
     free(Actual);
     return objetivo;
 }
-*/
+
 /*Funcion para determinar si el estado es repetido*/
 
 int estado_repetido(LISTA cerrados, tNodo* nodo)
@@ -354,34 +397,32 @@ int estado_repetido(LISTA cerrados, tNodo* nodo)
     return res;
 }
 
-/*Ordenacion voraz de la lista abiertos*/
-/*
-LISTA Ordenar_Abiertos_Voraz(LISTA A, LISTA S){
+LISTA Ordenar_Abiertos_A(LISTA A, LISTA S){
 
     tNodo *nodo=calloc(1,sizeof(tNodo));
 
     while(S != NULL){
 
         ExtraerPrimero(S,nodo, sizeof(tNodo));
-        A = Ordenacion_voraz(S,nodo);
+        A = ordenacion_A(S,nodo);
         S = S->next;
     }
     return A;
 }
 
-LISTA Ordenar_Abiertos_A(LISTA L,LISTA S){
+LISTA ordenacion_A(LISTA L, tNodo* nuevo){
 
     LISTA aux = NULL;
-    tNodo *nodo=calloc(1,sizeof(tNodo));
+    tNodo *nodo = calloc(1,sizeof(tNodo));
 
     if(esVacia(L)){
 
-        InsertarPrimero(&L,nodo,sizeof(tNodo));
+        InsertarPrimero(&L,nuevo,sizeof(tNodo));
     }
     else{
 
         ExtraerPrimero(L,(tNodo *)nodo,sizeof(tNodo));
-        while(!(Esvacia(L)) && ((nodo->valHeuristica + nodo->costeCamino) < ( nodo->valHeuristica + nuevo->costeCamino ))){
+        while(!(esVacia(L)) && ((nodo->valHeuristica + nodo->costeCamino) < ( nuevo->valHeuristica + nuevo->costeCamino ))){
 
             InsertarUltimo(&aux,(tNodo *)nodo,sizeof(tNodo));
             L = L->next; 
@@ -396,4 +437,3 @@ LISTA Ordenar_Abiertos_A(LISTA L,LISTA S){
 
     return aux;
 }
-*/

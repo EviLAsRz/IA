@@ -21,10 +21,10 @@
 
 #ifndef _tEstado_
 #define _tEstado_
-   typedef struct {
+  typedef struct {
         int celdas[N][N];
         int fila[N*N], col[N*N];
-   } tEstado;
+  } tEstado;
 
 
 static int puzle_inicial[N][N]=

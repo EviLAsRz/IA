@@ -29,3 +29,5 @@ int busqueda_A(void);
 int estado_repetido(LISTA, tNodo *);
 LISTA Ordenar_Abiertos_Voraz(LISTA, LISTA);
 LISTA Ordenar_Abiertos_A(LISTA, LISTA);
+LISTA ordenacion_A(LISTA, tNodo *);
+LISTA ordenacion_voraz(LISTA, tNodo *);
