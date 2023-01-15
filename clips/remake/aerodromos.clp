@@ -29,26 +29,18 @@
     (slot velCrucero (default 700))
 )
 
-(deffacts BaseHechos
-    (aeronave (id FX001) (company IBERIA) (origen Jerez) (destino Madrid) (velActual 0) (peticion Despegue) (estado enTierra))
-    (piloto (id FX001) (accion OK))
-    (piloto (id FX001) (accion SOS))
-    (aerodromo (id XRY) (ciudad Jerez) (estado ON) (radioVisibilidad 10) (velViento 60))
-    (aerodromo (id ZXT) (ciudad Madrid) (estado ON) (radioVisibilidad 10) (velViento 60))
-    (vuelo (idAerodromo1 XRY) (idAerodromo2 ZXT) (distancia 100) (velDespegue 240) (velCrucero 700))
-)
-
 (deffunction tiempoHoras (?vel ?dist)
-    ?cont = 0
     (if (> ?dist ?vel) then
-        (bind ?dist (- ?dist ?vel))
-        (bind ?cont (+ ?cont 1))
-    )
-    return ?cont
+        (bind ?dist (div ?dist ?vel))
+        return ?dist
+    )else return 0
 )
 
 (deffunction tiempoMinutos (?vel ?dist)
-
+    (bind ?dist (mod ?dist ?vel))
+    (bind ?dist (/ ?dist ?vel))
+    (bind ?dist (round(* ?dist 60)))
+    return ?dist
 )
 
 
@@ -87,4 +79,8 @@
     =>
     (modify ?nave (estado Crucero) (velActual ?vCru))
     (modify ?piloto (accion Stand-by))
+    (bind ?horas (tiempoHoras ?vCru ?vDis))
+    (bind ?minutos (tiempoMinutos ?vCru ?vDis))
+
+    (printout t "La nave "?idAero" con destino "?dAero" tardará aproximadamente "?horas" horas y "?minutos" minutos." crlf)
 )
